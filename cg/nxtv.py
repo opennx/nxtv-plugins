@@ -6,8 +6,7 @@ def ticker(self,text):
     text = text.upper()
     self.set_color("text_background")
     self.rect(0,self.SAFET,1920,48)
-    self.ctx.select_font_face('TeXGyreHerosCn', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-    self.ctx.set_font_size(36)
+    self.set_font("ticker")
     self.set_color("text_white")
     self.ctx.move_to(self.SAFEL,self.SAFET + 38)
     self.ctx.show_text(text)
@@ -15,18 +14,17 @@ def ticker(self,text):
 
 def clock(self,tstamp):
     self.rect(1700,self.SAFET,1920,48,"#000000ff")
-    self.ctx.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-    self.ctx.set_font_size(36)
+    self.set_font("ticker")
     self.set_color("text_white")
     self.ctx.move_to(1720,self.SAFET + 38)
     self.ctx.show_text(tstamp)
     self.ctx.stroke()
 
 def music_label(self,title,artist):
-    self.ctx.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL)
-    self.ctx.set_font_size(72)
+    self.set_font("default", 72)
     tx, ty, title_w, th, dx, dy = self.ctx.text_extents(title)
-    self.ctx.set_font_size(54)
+
+    self.set_font("default", 54)
     tx, ty, artist_w, th, dx, dy = self.ctx.text_extents(artist) 
     mwidth = max(title_w,artist_w) + 150
 
@@ -50,11 +48,14 @@ def music_label(self,title,artist):
     self.ctx.stroke()
 
 def music_label2(self,title,artist):
-    self.ctx.select_font_face('TeXGyreHerosCn', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-    self.ctx.set_font_size(36)
+    """
+    Song title and artist in ticker area (used when PIP is enabled)
+    """
+    self.set_font('ticker')
     tx, ty, artist_w, th, dx, dy = self.ctx.text_extents(artist) 
     tx, ty, title_w, th, dx, dy  = self.ctx.text_extents(title) 
-    self.rect(0,self.SAFET+78, self.SAFEL + artist_w + title_w + 40 ,48,"#000000d8")
+    self.set_color("text_background")
+    self.rect(0,self.SAFET+78, self.SAFEL + artist_w + title_w + 40 ,48)
     self.set_color("text_body")
     self.ctx.move_to(self.SAFEL,self.SAFET + 78 + 38)
     self.ctx.show_text(artist) 
@@ -64,9 +65,10 @@ def music_label2(self,title,artist):
     self.ctx.show_text(title)
     self.ctx.stroke()
 
+
 def subtitle(self,titles):
-    self.ctx.set_font_size(46)
     self.ctx.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL,cairo.FONT_WEIGHT_BOLD)
+    self.ctx.set_font_size(46)
     for i,text in enumerate(titles[::-1]):
         tx, ty, tw, th, dx, dy = self.ctx.text_extents(text)
         self.ctx.move_to((self.w/2)-(tw/2),self.SAFEB-(i*52))
@@ -81,11 +83,14 @@ def subtitle(self,titles):
         self.ctx.stroke()
 
 
+
+
 def text_area(self, text, header=False):
     size=84
     header_size=96
     x, y,  = self.SAFEL, 350
-    pad_lft = pad_rgt = 25
+    pad_lft = 25
+    pad_rgt = 25
     pad_top = 20
     pad_btm = 20
     spacing = 20

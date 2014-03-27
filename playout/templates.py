@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import copy
+
 from nx import *
 from nx.cg import CG
 from nx.plugins import PlayoutPlugin
-
 
 __manifest__ = {
     "name"        : "Templates",
@@ -14,28 +15,25 @@ __manifest__ = {
 class Plugin(PlayoutPlugin):
     def on_init(self):
         self.id_layer = 11
-        self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_vedci_zjistili.png")
+        self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_template.png")
 
         self.templates = {
-            1272 : [self.vedci_show, self.vedci_hide], # Vedci zjistili
+            1304 : [self.vedci_show, self.vedci_hide] # Vedci zjistili
         }
 
 
     def on_change(self):
         id_asset = self.channel.current_asset.id
-        self.tasks = self.templates.get(id_asset, [])
+        self.tasks = copy.copy(self.templates.get(id_asset, [])) # yes. copy is needed. for the first time in my life
         if not self.tasks:
             self.query("CLEAR {}".format(self.layer()))
-
-
-
 
 
     def vedci_show(self):
         cg = CG()
         cg.vedci_zjistili()
         cg.save(self.image_file)
-        self.query("PLAY {} cg_vedci_zjistili WIPE 15 RIGHT".format(self.layer()))
+        self.query("PLAY {} cg_template WIPE 15 RIGHT".format(self.layer()))
         return True
 
     def vedci_hide(self):
@@ -43,5 +41,3 @@ class Plugin(PlayoutPlugin):
             return False
         self.query("PLAY {} blank MIX 15 ".format(self.layer()))
         return True
-
-

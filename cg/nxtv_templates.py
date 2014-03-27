@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 def vedci_zjistili(self):
     try:    
         data = open("/mnt/nx02/Library/vedci_zjistili.txt").read()
