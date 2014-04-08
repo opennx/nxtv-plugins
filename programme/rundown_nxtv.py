@@ -49,7 +49,7 @@ class Rundown(dramatica.Rundown):
 
         if self.dow in [FRI, SAT]:
             self.add("RockingPub", start=(19,00))
-            self.add("Nachtmetal", start=(23,59))
+            self.add("Nachtmetal", start=(01,00))
         else:
 
             self.add("Rocking")
@@ -64,22 +64,22 @@ class Rundown(dramatica.Rundown):
                 self.add("Movie", start=(20,00), genre="Drama/Horror")
                 self.add("Zpravy")
                 self.add("ShortFilm", genre="Drama/Horror")
-                self.add("Nachtmetal") 
+                self.add("Nachtmetal", start=(23,00)) 
 
             elif self.dow == TUE:
                 self.add("Movie", start=(20,00), genre=["Political", "Social"])
                 self.add("Zpravy")
                 self.add("ShortFilm", genre=["Political", "Social"])
-                self.add("Nachtmetal") 
+                self.add("Nachtmetal", start=(23,00)) 
 
             elif self.dow == WED:
              #   self.add("EmptyBlock", start=(20,00), title="Arts")
                 self.add("Zpravy")
                 self.add("ShortFilm")
-                self.add("Nachtmetal") 
+                self.add("Nachtmetal", start=(23,00)) 
 
             elif self.dow == THU:
              #   self.add(EmptyBlock, start=(20,00), title="Technology")
                 self.add("Zpravy")
                 self.add("ShortFilm")
-                self.add("Nachtmetal") 
+                self.add("Nachtmetal", start=(23,00)) 
