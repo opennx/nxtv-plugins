@@ -36,12 +36,12 @@ class Plugin(PlayoutPlugin):
             cg.save(self.clock_file)
             self.query("PLAY {} cg_clock".format(self.layer(99)))
 
-        if now - self.current_tick > 10:
-            self.current_tick = now
-            cg = CG()
-            cg.ticker("Ticker z {}".format(now))
-            cg.save(self.ticker_file)
-            self.query("PLAY {} cg_ticker".format(self.layer(98)))
+#        if now - self.current_tick > 10:
+#            self.current_tick = now
+#            cg = CG()
+#            cg.ticker("Ticker z {}".format(now))
+#            cg.save(self.ticker_file)
+#            self.query("PLAY {} cg_ticker".format(self.layer(98)))
 
         return False
 

@@ -18,12 +18,11 @@ class Plugin(PlayoutPlugin):
 
 
     def on_change(self):
-        if self.channel.current_asset["id_folder"] == 1:
+        if self.channel.current_asset["id_folder"] == 5:
             cg = CG()
             cg.music_label(self.channel.current_asset["title"], self.channel.current_asset["role/performer"])
             cg.save(self.image_file)
-
-            self.tasks = [self.begin_show, self.begin_hide]#, self.end_show, self.end_hide]
+            self.tasks = [self.begin_show, self.begin_hide, self.end_show, self.end_hide]
         else:
             self.tasks = []
             self.query("CLEAR {}".format(self.layer()))
@@ -46,13 +45,13 @@ class Plugin(PlayoutPlugin):
 
 
     def end_show(self):
-        if self.channel.get_position() < self.channel.get_duration() - 250:
+        if self.channel.get_position() < self.channel.get_duration() - 300:
             return False 
         self.query("PLAY {} cg_music_label PUSH 15 RIGHT".format(self.layer()))
         return True
 
     def end_hide(self):
-        if self.channel.get_position() < self.channel.get_duration() - 50:
+        if self.channel.get_position() < self.channel.get_duration() - 100:
             return False
         self.query("PLAY {} blank PUSH 15 LEFT".format(self.layer()))
         return True

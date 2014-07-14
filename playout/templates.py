@@ -18,7 +18,8 @@ class Plugin(PlayoutPlugin):
         self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_template.png")
 
         self.templates = {
-            1304 : [self.vedci_show, self.vedci_hide] # Vedci zjistili
+            1358 : [self.vedci_show, self.vedci_hide], # Vedci zjistili
+            1359 : [self.program_show, self.program_hide]
         }
 
 
@@ -40,4 +41,15 @@ class Plugin(PlayoutPlugin):
         if self.channel.get_position() < 230: 
             return False
         self.query("PLAY {} blank MIX 15 ".format(self.layer()))
+        return True
+
+
+    def program_show(self):
+        self.query("PLAY {} cg_prog1 WIPE 15 RIGHT".format(self.layer()))
+        return True
+
+    def program_hide(self):
+        if self.channel.get_position() < self.channel.get_duration() - 70: 
+            return False
+        self.query("PLAY {} blank MIX 15".format(self.layer()))
         return True
