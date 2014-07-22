@@ -3,9 +3,9 @@
 def vedci_zjistili(self):
     try:    
         data = open("/mnt/nx02/Library/vedci_zjistili.txt").read()
+        text = random.choice([i.strip() for i in data.strip().split("\n")])
     except: 
-        data = """že soubor s tím, co zjistili, není k dispozici-"""
-    text = random.choice([i.strip() for i in data.strip().split("\n")])
+        text = """že soubor s tím, co zjistili, není k dispozici"""
     self.text_area(text, "Vědci zjistili")
  
 

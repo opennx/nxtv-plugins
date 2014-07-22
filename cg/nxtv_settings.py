@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 SAFET = 54 
-SAFEL = 96
-SAFER = 1920 - SAFET
-SAFEB = 1080 - SAFEL
+SAFEL = 192
+SAFER = 1920 - SAFEL
+SAFEB = 1080 - SAFET
 
 def fuzzy(self, f=.9,t=3):
     import random

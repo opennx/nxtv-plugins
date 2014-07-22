@@ -18,8 +18,10 @@ class Plugin(PlayoutPlugin):
         self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_template.png")
 
         self.templates = {
-            1358 : [self.vedci_show, self.vedci_hide], # Vedci zjistili
-            1359 : [self.program_show, self.program_hide]
+            21 : [self.vedci_show, self.vedci_hide], # Vedci zjistili
+            22 : [self.program_show, self.program_hide],
+            23 : [self.program_show, self.program_hide],
+            24 : [self.program_show, self.program_hide]
         }
 
 

@@ -26,23 +26,23 @@ def music_label(self,title,artist):
 
     self.set_font("default", 54)
     tx, ty, artist_w, th, dx, dy = self.ctx.text_extents(artist) 
-    mwidth = max(title_w,artist_w) + 150
+    mwidth = max(title_w,artist_w) + self.SAFEL + 40
 
     self.set_color("text_background")
-    self.ctx.move_to(60    ,   940)
-    self.ctx.line_to(mwidth,   900)
-    self.ctx.line_to(mwidth+20,750)
-    self.ctx.line_to(80    ,   710)
+    self.ctx.move_to(self.SAFEL - 30,   self.SAFEB - 65)
+    self.ctx.line_to(mwidth,            self.SAFEB - 90)
+    self.ctx.line_to(mwidth+35,         self.SAFEB - 255)
+    self.ctx.line_to(self.SAFEL -40,    self.SAFEB - 280)
     self.ctx.fill()
  
-    self.ctx.set_font_size(72)
-    self.ctx.move_to(self.SAFEL,self.SAFEB-170)
+    self.set_font("default", 72)
+    self.ctx.move_to(self.SAFEL,self.SAFEB-175)
     self.set_color("text_head")
     self.ctx.show_text(title)
     self.ctx.stroke()
 
-    self.ctx.set_font_size(54)
-    self.ctx.move_to(self.SAFEL,self.SAFEB-100)
+    self.set_font("default", 54)
+    self.ctx.move_to(self.SAFEL,self.SAFEB-105)
     self.set_color("text_body")
     self.ctx.show_text(artist)
     self.ctx.stroke()
@@ -130,7 +130,6 @@ def text_area(self, text, header=False):
             line = ("%s %s" % (line,word)).strip()
         rem = ""
     lines.append(line)
-
 
     y+= spacing
     

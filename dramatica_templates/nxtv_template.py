@@ -1,6 +1,7 @@
 from dramatica.templates import DramaticaTemplate
 from dramatica.timeutils import *
 
+
 __manifest__ = {
     "name"        : "NXTV",
     "description" : "NXTV programming structure",
@@ -11,7 +12,6 @@ __manifest__ = {
 
 class Template(DramaticaTemplate):
     def apply(self):
-
         MAIN_GENRES = {
             MON : ["horror"], 
             TUE : ["political", "social", "conspiracy"],
@@ -23,61 +23,90 @@ class Template(DramaticaTemplate):
         }[self.dow]
 
 
-        JINGLE_FEED = {
+        DAY_JINGLES = {
             MON : "path like '%horror_%'",
             TUE : "path like '%paranoia_%'",
-            WED : "path like '%art_%'",
+            WED : False,
             THU : "path like '%tech_%'",
-            FRI : "path like '%generic_%'",
-            SAT : "path like '%generic_%'",
-            SUN : "path like '%generic_%'"
+            FRI : False,
+            SAT : False,
+            SUN : False
         }[self.dow]
 
 
-        self.add_block("06:00", title="Morning mourning")
+        self.add_block("06:00", title="Morning mourning", run_mode=2)
         self.configure(
             solver="MusicBlock", 
             genres=["Pop", "Rock", "Alt rock"],
             target_duration=dur("01:00:00"),
-            run_mode=2
+            jingles="id_folder = 8",
+            promos="id_folder = 3",
             )
 
-        self.add_block("10:00", title="Some movie")
+        self.add_block("10:00", title="Some movie", run_mode=2)
         self.configure(
-            solver="DefaultSolver",
-            run_mode=2
+            solver="DefaultSolver"
             )   
 
         self.add_block("12:00", title="Rocking")
+        jingles = "path LIKE '%vedci_zjistili%'"
+        if DAY_JINGLES:
+            jingles += " OR " + DAY_JINGLES
         self.configure(
             solver="MusicBlock",
             genres=["Rock"],
             intro_jingle="path LIKE '%vedci_zjistili%'",
-            jingles="path LIKE '%vedci_zjistili%'"
+            outro_jingle="path LIKE '%program_%'",
+            jingles=jingles,
+            promos="id_folder = 3",
             )   
 
         self.add_block("15:00", title="Another movie")
         self.configure(
             solver="DefaultSolver",
-            genres=MAIN_GENRES
+            genres=MAIN_GENRES,
+            jingles=jingles
             )   
 
-        self.add_block("19:00", title="PostX")
-        self.configure(
-            solver="MusicBlock",
-            genres=["Alt rock"],
-            intro_jingle="path LIKE '%postx_short%'",
-            outro_jingle="path LIKE '%postx_short%'",
-            jingles="path LIKE '%postx_short%'"
-            )   
+        ###############################
+        ## Prime time
 
-        self.add_block("21:00", title="Movie of the day")
-        self.configure(
-            solver="DefaultSolver",
-            genres=MAIN_GENRES
-            )   
+        if self.dow in [FRI, SAT]:
+            self.add_block("18:00", title="Rock pub")
+            self.configure(
+                solver="MusicBlock",
+                genres=["Rock"],
+                intro_jingle="path LIKE '%rockpub%'",
+                outro_jingle="path LIKE '%rockpub%'",
+                jingles="path LIKE '%vedci_zjistili%' or path LIKE '%rockpub%'"
+                )
+            nachtmetal_start = "00:00"
 
-        self.add_block("23:00", title="Nachtmetal")
+        else:
+            self.add_block("19:00", title="PostX")
+            self.configure(
+                solver="MusicBlock",
+                genres=["Alt rock"],
+                intro_jingle="path LIKE '%postx_short%'",
+                outro_jingle="path LIKE '%program_%'",
+                jingles="path LIKE '%postx_short%'"
+                )   
+
+            self.add_block("21:00", title="Movie of the day")
+            self.configure(
+                solver="DefaultSolver",
+                genres=MAIN_GENRES,
+                jingles=DAY_JINGLES
+                )   
+
+            nachtmetal_start = "23:00"
+
+
+        ## Prime time
+        ###############################
+        ## Graveyard slot
+
+        self.add_block(nachtmetal_start, title="Nachtmetal")
         self.configure(
             solver="MusicBlock",
             genres=["Metal"],
