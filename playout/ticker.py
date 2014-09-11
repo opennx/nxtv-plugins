@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import urllib2
+
 from nx import *
 from nx.cg import CG
 from nx.plugins import PlayoutPlugin
@@ -20,7 +22,7 @@ class Plugin(PlayoutPlugin):
         self.ticker_file = os.path.join(storages[3].get_path(), "media.dir", "cg_ticker.png")
 
     def on_change(self):
-        if self.channel.current_asset: #Set your condition here (e.g. 'commercial' etc.)
+        if self.channel.current_asset["id_folder"] == 5: #Set your condition here (e.g. 'commercial' etc.)
             self.tasks = [self.show]
         else:
             self.tasks = []
@@ -36,12 +38,18 @@ class Plugin(PlayoutPlugin):
             cg.save(self.clock_file)
             self.query("PLAY {} cg_clock".format(self.layer(99)))
 
-#        if now - self.current_tick > 10:
-#            self.current_tick = now
-#            cg = CG()
-#            cg.ticker("Ticker z {}".format(now))
-#            cg.save(self.ticker_file)
-#            self.query("PLAY {} cg_ticker".format(self.layer(98)))
+        if now - self.current_tick > 10:
+            try:
+                data = json.loads(urllib2.urlopen("http://localhost:42200", timeout=1).read())
+            except:
+                data = False
+            
+            if data:
+                self.current_tick = now
+                cg = CG()
+                cg.ticker(data["title"])
+                cg.save(self.ticker_file)
+                self.query("PLAY {} cg_ticker MIX 10".format(self.layer(98)))
 
         return False
 
