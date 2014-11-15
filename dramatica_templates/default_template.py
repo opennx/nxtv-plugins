@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from dramatica.templates import DramaticaTemplate
 from dramatica.timeutils import *
 
@@ -41,7 +43,7 @@ class Template(DramaticaTemplate):
         }[self.dow]
 
 
-        self.add_block("06:00", title="Morning mourning", description=DESC_MORNING run_mode=2, color=COLOR_MUSIC)
+        self.add_block("06:00", title="Morning mourning", description=DESC_MORNING, run_mode=2, color=COLOR_MUSIC)
         self.configure(
             solver="MusicBlock",
             genre=["Pop", "Rock", "Alt rock"],
@@ -118,7 +120,7 @@ class Template(DramaticaTemplate):
         ###############################
         ## Graveyard slot
 
-        self.add_block(nachtmetal_start, title="Nachtmetal", description=DESC_METAL,color=COLOR_MUSIC)
+        self.add_block(nachtmetal_start, title="Nachtmetal", description=DESC_METAL, color=COLOR_MUSIC)
         self.configure(
             solver="MusicBlock",
             genre=["Metal"],
