@@ -30,14 +30,19 @@ class Plugin(PlayoutPlugin):
             return
 
         asset = self.channel.current_asset
+        event = self.channel.current_event
 
         if asset["id_folder"] == 5:
             self.data["title"] = asset["title"]
             self.data["subtitle"] = asset["role/performer"]
-            self.data["description"] = asset["description"]
+            if event["id_asset"]:
+                self.data["description"] = asset["description"]
+            else:
+                # music blocks can show block description instead asset's
+                self.data["description"] = asset["description"] or event["description"]
         else:
-            self.data["title"] = self.channel.current_event["title"]
-            self.data["description"] = self.channel.current_event["description"]
+            self.data["title"] = event["title"]
+            self.data["description"] = event["description"]
 
         url = False
         if asset["source/url"]:

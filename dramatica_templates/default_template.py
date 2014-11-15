@@ -10,17 +10,23 @@ __manifest__ = {
 
 COLOR_MUSIC = "#00aa00"
 
+DESC_MORNING = ""
+DESC_ROCK    = "Rozhlas po drátě k práci i poslechu v podobě proudu rocku."
+DESC_POSTX   = "Post rock, alt rock a hromada kapel, o kterých nikdy nikdo neslyšel."
+DESC_PUB     = "Neseďte večer doma. A když už musíte, tak předstírejte, že jste v rockové hospodě"
+DESC_METAL   = "Nemůžete usnout? S tím vám nepomůžeme. Blití do mikrofonu a řezání do kytar začíná po posledním filmu a končí až nad ránem."
+
 
 class Template(DramaticaTemplate):
     def apply(self):
         MAIN_GENRES = {
-            MON : ["horror"], 
-            TUE : ["social", "conspiracy"],
-            WED : ["arts"],
-            THU : ["technology"],
-            FRI : ["rock", "drama", "comedy"],
-            SAT : ["rock", "drama", "comedy"],
-            SUN : ["drama", "comedy"]
+            MON : ["Horror"], 
+            TUE : ["Social"],
+            WED : ["Arts"],
+            THU : ["Technology"],
+            FRI : ["Rock", "Drama", "Comedy"],
+            SAT : ["Rock", "Drama", "Comedy"],
+            SUN : ["Drama", "Comedy"]
         }[self.dow]
 
 
@@ -35,7 +41,7 @@ class Template(DramaticaTemplate):
         }[self.dow]
 
 
-        self.add_block("06:00", title="Morning mourning", run_mode=2, color=COLOR_MUSIC)
+        self.add_block("06:00", title="Morning mourning", description=DESC_MORNING run_mode=2, color=COLOR_MUSIC)
         self.configure(
             solver="MusicBlock",
             genre=["Pop", "Rock", "Alt rock"],
@@ -52,7 +58,7 @@ class Template(DramaticaTemplate):
             jingles=DAY_JINGLES
             )   
 
-        self.add_block("12:00", title="NX Rocks", color=COLOR_MUSIC)
+        self.add_block("12:00", title="NX Rocks", description=DESC_ROCK, color=COLOR_MUSIC)
         jingles = "path LIKE '%vedci_zjistili%'"
         if DAY_JINGLES:
             jingles += " OR " + DAY_JINGLES
@@ -77,7 +83,7 @@ class Template(DramaticaTemplate):
         ## Prime time
 
         if self.dow in [FRI, SAT]:
-            self.add_block("18:00", title="Rock pub", color=COLOR_MUSIC)
+            self.add_block("18:00", title="Rock pub", description=DESC_PUB, color=COLOR_MUSIC)
             self.configure(
                 solver="MusicBlock",
                 genre="Rock",
@@ -88,7 +94,7 @@ class Template(DramaticaTemplate):
             nachtmetal_start = "00:00"
 
         else:
-            self.add_block("19:00", title="PostX", color=COLOR_MUSIC)
+            self.add_block("19:00", title="PostX", description=DESC_POSTX, color=COLOR_MUSIC)
             self.configure(
                 solver="MusicBlock",
                 genre="Alt rock",
@@ -112,7 +118,7 @@ class Template(DramaticaTemplate):
         ###############################
         ## Graveyard slot
 
-        self.add_block(nachtmetal_start, title="Nachtmetal", color=COLOR_MUSIC)
+        self.add_block(nachtmetal_start, title="Nachtmetal", description=DESC_METAL,color=COLOR_MUSIC)
         self.configure(
             solver="MusicBlock",
             genre=["Metal"],
