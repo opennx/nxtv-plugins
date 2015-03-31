@@ -7,6 +7,14 @@ def vedci_zjistili(self):
     except: 
         text = """že soubor s tím, co zjistili, není k dispozici"""
     self.text_area(text, "Vědci zjistili")
+
+def vedeli_jste(self):
+    try:    
+        data = open("/mnt/nx02/Library/vedeli_jste.txt").read()
+        text = random.choice([i.strip() for i in data.strip().split("\n")])
+    except: 
+        text = """tahle grafika nám zrovna nefunguje"""
+    self.text_area(text, "Věděli jste?")
  
 
 
