@@ -19,6 +19,8 @@ class Plugin(PlayoutPlugin):
 
         self.templates = {
             1358 : [self.vedci_show, self.vedci_hide], # Vedci zjistili
+            2629 : [self.vedeli_show, self.vedeli_hide], # Vedci zjistili
+
             1359 : [self.program_show, self.program_hide],
             1900 : [self.program_show, self.program_hide],
             1901 : [self.program_show, self.program_hide]
@@ -30,6 +32,8 @@ class Plugin(PlayoutPlugin):
         self.tasks = copy.copy(self.templates.get(id_asset, [])) # yes. copy is needed. for the first time in my life
         if not self.tasks:
             self.query("CLEAR {}".format(self.layer()))
+
+
 
 
     def vedci_show(self):
@@ -44,6 +48,24 @@ class Plugin(PlayoutPlugin):
             return False
         self.query("PLAY {} blank MIX 15 ".format(self.layer()))
         return True
+
+
+
+    def vedeli_show(self):
+        cg = CG()
+        cg.vedeli_jste()
+        cg.save(self.image_file)
+        self.query("PLAY {} cg_template WIPE 15 RIGHT".format(self.layer()))
+        return True
+
+    def vedeli_hide(self):
+        if self.channel.get_position() < self.channel.get_duration() - 70:  
+            return False
+        self.query("PLAY {} blank MIX 15 ".format(self.layer()))
+        return True
+
+
+
 
 
     def program_show(self):
