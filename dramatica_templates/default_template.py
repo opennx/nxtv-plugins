@@ -33,10 +33,10 @@ class Template(DramaticaTemplate):
 
 
         DAY_JINGLES = {
-            MON : "path like '%horror_%'",
-            TUE : "path like '%paranoia_%'",
-            WED : False,
-            THU : "path like '%tech_%'",
+            MON : "(id_folder=4 AND path LIKE '%horror_%')",
+            TUE : "(id_folder=4 AND path LIKE '%paranoia_%')",
+            WED : "(id_folder=4 AND path LIKE '%art_%')",
+            THU : "(id_folder=4 AND path LIKE '%tech_%')",
             FRI : False,
             SAT : False,
             SUN : False
@@ -48,7 +48,7 @@ class Template(DramaticaTemplate):
             solver="MusicBlock",
             genre=["Pop", "Rock", "Alt rock"],
             target_duration=dur("01:00:00"),
-            jingles="id_folder = 8",
+            jingles="path LIKE '%morning_jingle%'",
             promos="id_folder = 3",
             )
 
@@ -61,13 +61,13 @@ class Template(DramaticaTemplate):
             )   
 
         self.add_block("12:00", title="NX Rocks", description=DESC_ROCK, color=COLOR_MUSIC)
-        jingles = "path LIKE '%vedci_zjistili%'"
+        jingles = "(path LIKE '%vedci_zjistili%' or path LIKE '%vedeli_jste%')"
         if DAY_JINGLES:
             jingles += " OR " + DAY_JINGLES
         self.configure(
             solver="MusicBlock",
             genre="Rock",
-            intro_jingle="path LIKE '%vedci_zjistili%'",
+            intro_jingle="path LIKE '%nxrocks_jingle%'",
             outro_jingle="path LIKE '%program_%'",
             jingles=jingles,
             promos="id_folder = 3",
@@ -89,9 +89,9 @@ class Template(DramaticaTemplate):
             self.configure(
                 solver="MusicBlock",
                 genre="Rock",
-                intro_jingle="path LIKE '%rockpub%'",
-                outro_jingle="path LIKE '%rockpub%'",
-                jingles="path LIKE '%vedci_zjistili%' or path LIKE '%rockpub%'"
+                intro_jingle="path LIKE '%rockpub1%'",
+                outro_jingle="path LIKE '%program_%'",
+                jingles="(path LIKE '%vedci_zjistili%' or path LIKE '%vedeli_jste%')"
                 )
             nachtmetal_start = "00:00"
 

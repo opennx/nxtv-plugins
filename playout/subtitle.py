@@ -43,7 +43,7 @@ class Plugin(PlayoutPlugin):
                 start, stop = tcodes.split("-->")
                 start = self.parse_tc(start)
                 stop  = self.parse_tc(stop) 
-                self.subs.append((start,stop,lines))
+                self.subs.append((start, stop, lines))
             return True
         else:
             return False
@@ -53,26 +53,31 @@ class Plugin(PlayoutPlugin):
         hh,mm,ss = tcode.strip().split(":")
         hh = int(hh)
         mm = int(mm)
-        ss = float(ss.replace(",","."))
+        ss = float(ss.replace(",", "."))
         return (hh*3600*tbase) + (mm*60*tbase) + (ss*tbase)
     
         
     def make_sub(self):
         try:    
-            self.next_start, self.next_stop, titles = self.subs.pop(0)
+            self.next_start, self.next_stop, lines = self.subs.pop(0)
         except: 
             self.next_start = self.next_stop = False
             return False  
+
+        if self.next_stop < self.channel.fpos:
+            return self.make_sub()
         
+        logging.debug("Next sub at pos {} : {}...".format(self.next_start, lines[0]))
         c = CG()
-        c.subtitle(titles)
+        c.subtitle(lines)
         c.save(self.image_file)
         return True
      
      
     def show_sub(self):
         if self.channel.fpos > self.next_start + self.subs_offset:
-            self.query("PLAY %s cg_subtitle" % self.layer())
+            logging.debug("Executing sub at pos {}".format(self.channel.fpos))
+            self.query("PLAY {} cg_subtitle".format(self.layer()))
             self.current_stop = self.next_stop
             self.make_sub() 
             self.tasks.append(self.hide_sub)
@@ -83,7 +88,7 @@ class Plugin(PlayoutPlugin):
       
     def hide_sub(self):
         if self.channel.fpos > self.current_stop + self.subs_offset:
-            self.query("CLEAR %s" % self.layer())
+            self.query("CLEAR {}".format(self.layer()))
             if self.next_start:
                 self.tasks.append(self.show_sub)
             return True
