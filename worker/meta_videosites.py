@@ -26,7 +26,6 @@ def youtubedata(ytid):
         "title" : r"<title[^>]*>([^<]+)</title>",
         "title/original" : r"<title[^>]*>([^<]+)</title>",
         "subject" : r"<meta name\=\"keywords\" content\=\"([^<]+)\">",
-        "description" : r"<meta name\=\"description\" content\=\"([^<]+)\">",
         "description/original" : r"<meta name\=\"description\" content\=\"([^<]+)\">",
     }
 
@@ -65,7 +64,7 @@ def youtubedata(ytid):
     description = item["snippet"]["description"],
 
     result["title"] = result["title/original"] = title[0]
-    result["description"] = result["description/original"] = description[0]
+    result["description/original"] = description[0]
 
     if item["status"]["license"] == "creativeCommon":
         result["rights"] = "CC BY 3.0"
@@ -91,7 +90,7 @@ def vimeodata(vid):
     description = data["description"].replace("<br />", "").replace("\r", "").strip().replace("\n\n\n","\n\n")
     title = data["title"].strip()
     result["subject"] = data["tags"].strip()
-    result["description"] = result["description/original"] = description
+    result["description/original"] = description
     result["title"] = result["title/original"] = title
 
 
