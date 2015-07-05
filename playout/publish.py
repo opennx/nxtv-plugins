@@ -44,6 +44,8 @@ class Plugin(PlayoutPlugin):
             self.data["title"] = event["title"]
             self.data["description"] = event["description"]
 
+
+
         url = False
         if asset["source/url"]:
             url = asset["source/url"]
@@ -52,9 +54,12 @@ class Plugin(PlayoutPlugin):
         elif asset["identifier/vimeo"]:
             url = "http://vimeo.com/{}".format(asset["identifier/vimeo"])
 
+
         meta = []
         self.data["meta"] = meta
-        self.data["id_asset"] = self.channel.current_asset.id
+        self.data["rights"] = asset["rights"]
+        self.data["id_asset"] = asset.id
+        self.data["author"] = asset["role/director"] or asset["source/author"]
         if url:
             self.data["url"] = url
 
