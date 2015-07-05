@@ -27,6 +27,8 @@ def youtubedata(ytid):
         "title/original" : r"<title[^>]*>([^<]+)</title>",
         "subject" : r"<meta name\=\"keywords\" content\=\"([^<]+)\">",
         "description/original" : r"<meta name\=\"description\" content\=\"([^<]+)\">",
+        #"source/author" : r"<link itemprop\=\"url\" href=\"http://www.youtube.com/user/(.*)\">",
+        "source/author" : r"\<div class\=\"yt-user-info\"\>\n.*\>(.*)\<\/a"
     }
 
     for key in exps:
@@ -92,7 +94,7 @@ def vimeodata(vid):
     result["subject"] = data["tags"].strip()
     result["description/original"] = description
     result["title"] = result["title/original"] = title
-
+    result["source/author"] = data["user_name"]
 
     url = "http://vimeo.com/{}".format(vid)
     headers = { 'User-Agent' : 'Mozilla/5.0' }
