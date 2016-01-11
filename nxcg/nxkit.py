@@ -1,29 +1,40 @@
 from nxcg.plugin import NXCGPlugin
 from nxcg.utils import textify
 
+
 class Plugin(NXCGPlugin):
     def on_init(self):
-        self.cg.nx_kit_defaults = {
+        self.cg.nxkit_defaults = {
                 "ticker_position" : "bottom",
                 "ticker_height" : 48,
                 "ticker_voffset" : 2,
+                "ticker_caps" : False,
                 "ticker_font" : "Roboto Medium 26",
                 "ticker_background" : "black glass 75",
                 "ticker_color" : "white",
                 "clock_position" : "right",
                 "clock_width" : 100,
-                "clock_font" : "Roboto Bold 26",
+                "clock_font" : False,                                   # Inherit from ticker font
+                "clock_color" : False,                                  # Inherit from ticker font
                 "clock_background" : "black",
-                "clock_color" : "white",
+                "crawl_font" : False,
+                "crawl_color" : False,
+                "crawl_background" : False,
+                "text_area_head_color" : "gold",
+                "text_area_body_color" :  "white",
+                "text_area_head_background" : "black glass 80",
+                "text_area_body_background" : False,                    # Inherit form text area head
+                "text_area_head_font" : "Roboto Medium 40",
+                "text_area_body_font" : "Roboto Medium 36",
             }
 
 
     def __param(self, key):
-        if hasattr(self.cg, "nx_kit") and key in self.cg.nx_kit:
-            return self.cg.nx_kit
-        return self.cg.nx_kit_defaults
+        if hasattr(self.cg, "nxkit") and key in self.cg.nxkit:
+            return self.cg.nxkit[key]
+        return self.cg.nxkit_defaults[key]
 
-
+    @property
     def __ticker_y(self):
         if self.__param("ticker_position") == "bottom":
             return self.cg.height - self.cg.safe.b - self.__param("ticker_height")
@@ -31,51 +42,56 @@ class Plugin(NXCGPlugin):
             return self.cg.safe.t
 
 
-    def nx_kit_ticker(self, text):
+    def nxkit_ticker(self, text):
         text = textify(text)
+        if self.__param("ticker_caps"):
+            text = text.upper()
         self.cg.set_color(self.__param("ticker_background"))
         self.cg.rect(0, self.__ticker_y, self.cg.width, self.__param("ticker_height"))
-        self.cg.text(text,
+        self.cg.text(
+                text,
                 pos=(self.cg.safe.l, self.__ticker_y + self.__param("ticker_voffset")),
                 color=self.__param("ticker_color"),
                 font=self.__param("ticker_font"),
             )
 
 
-#TODO
-    def nx_kit_clock(self, tstamp):
-        self.cg.set_color(self._param("clock_background"))
-        self.cg.rect(self.clock_x, self.__ticker_y, self.cg.width - self.clock_x, self.ticker_h)
-        a,b = self.cg.text(tstamp,
-                pos=(self.clock_x + 14, self.ticker_y + self.ticker_voffset),
-                color="text_tick",
-                font=FONT_CLOCK
+    def nxkit_clock(self, tstamp):
+        #TODO: Clock on left
+        x = self.cg.safe.r - self.__param("clock_width")
+        w = self.cg.width - x
+        self.cg.set_color(self.__param("clock_background"))
+        self.cg.rect(x, self.__ticker_y, w, self.__param("ticker_height"))
+        a,b = self.cg.text(
+                tstamp,
+                pos=(x + 14, self.__ticker_y + self.__param("ticker_voffset")),
+                color=self.__param("clock_color") or self.__param("ticker_color"),
+                font=self.__param("clock_font") or self.__param("ticker_font")
             )
 
 
-#TODO
-    def nx_kit_crawl(self, text):
+    def nxkit_crawl(self, text):
+        #TODO: Position, safe areas...
         text = textify(text)
-        w, h = self.cg.text(text,
-            font=FONT_CRAWL,
-            color="text_crawl",
-            spacing=0,
+        w, h = self.cg.text(
+            text,
+            font=self.__param("crawl_font") or self.__param("ticker_font"),
             render=False
             )
         top = SAFET + 48
         self.cg.new(w, 1080)
-        self.cg.set_color("black glass 75")
+        self.cg.set_color(self.__param("crawl_background") or self.__param("ticker_background"))
         self.cg.rect(0, top, w, 54)
-        self.cg.text(text ,
+        self.cg.text(
+            text,
             pos=(0, top+1),
-            font=FONT_CRAWL,
-            color="text_crawl",
+            font=self.__param("crawl_font") or self.__param("ticker_font"),
+            color=self.__param("crawl_color") or self.__param("ticker_font"),
             spacing=0
             )
 
 
-#TODO
-    def nx_kit_text_area(self, header, text, source=False):
+    def nxkit_text_area(self, header, text, source=False):
         header = textify(header).upper()
         text = textify(text)
         off = 160
@@ -85,31 +101,33 @@ class Plugin(NXCGPlugin):
         x = self.cg.safe.l
         y = self.cg.safe.t + off
         w, h = self.cg.text(header,
-            font=FONT_HEAD,
-            color="gold",
+            font=self.__param("text_area_head_font"),
+            color=self.__param("text_area_head_color"),
             width=wi,
             spacing=0,
             render=False
             )
-        self.cg.set_color("sport grey 80")
+        self.cg.set_color(self.__param("text_area_head_background"))
         self.cg.rect(x-pad_h, y-5, w+(pad_h*2), h+10)
         self.cg.text_render(x, y)
         ### Text
         y = self.cg.safe("t") + off + h + 40
-        w, h = self.cg.text(text ,
-            font=FONT_BODY,
-            color="text_tick",
+        w, h = self.cg.text(
+            text,
+            font=self.__param("text_area_body_font") or self.__param("text_area_head_font"),
+            color=self.__param("text_area_body_color") or self.__param("text_area_head_color"),
             width=wi,
             spacing=0,
             render=False
             )
-        self.cg.set_color("sport grey 80")
-        self.cg.rect(x-pad_h, y-10, w+(pad_h*2), h+100)
+        self.cg.set_color(self.__param("text_area_body_background") or self.__param("text_area_head_background"))
+        self.cg.rect(x-pad_h, y-10, w+(pad_h*2), h+80)
         self.cg.text_render(x, y)
 
 
 #TODO
-    def nx_kit_subtitle(self,titles):
+    def nxkit_subtitle(self,titles):
+        return
         self.ctx.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL,cairo.FONT_WEIGHT_BOLD)
         self.ctx.set_font_size(46)
         for i,text in enumerate(titles[::-1]):

@@ -4,38 +4,59 @@ from nxcg.utils import textify
 
 class Plugin(NXCGPlugin):
     def on_init(self):
-        self.cg.nx_kit = {
+        self.cg.nxkit = {
                 "ticker_position" : "top",
-                "text_color"      : "#b0c7e8",
+                "ticker_caps" : True,
+                "ticker_font" : "TeXGyreHeros Bold 24",
+                "ticker_color" : "#cccccc",
+                "clock_font" : "TeXGyreHeros Bold 24",
+                "clock_color" : "#cccccc",
+                "ticker_voffset" : 2,
+                "text_area_head_font" : "TeXGyreHeros Bold 48",
+                "text_area_body_font" : "Raleway 40",
+                "text_area_body_color" : "#b0c7e8",
             }
 
 
     def music_label(self,title,artist):
-        self.set_font("default", 72)
-        tx, ty, title_w, th, dx, dy = self.ctx.text_extents(title)
+        font_title = "Raleway 54"
+        font_artist = "Raleway 38"
+        title=textify(title)
+        artist=textify(artist)
+        title_w, h = self.cg.text(
+            title,
+            font=font_title,
+            render=False
+            )
+        artist_w, h = self.cg.text(
+            artist,
+            font=font_artist,
+            render=False
+            )
+        mwidth = max(title_w, artist_w) + self.cg.safe.l + 40
 
-        self.set_font("default", 54)
-        tx, ty, artist_w, th, dx, dy = self.ctx.text_extents(artist)
-        mwidth = max(title_w,artist_w) + self.SAFEL + 40
+        points = [
+            [self.cg.safe.l - 30, self.cg.safe.b - 65],
+            [mwidth, self.cg.safe.b - 90],
+            [mwidth + 35, self.cg.safe.b - 255],
+            [self.cg.safe.l - 40, self.cg.safe.b - 280]
+            ]
 
-        self.set_color("text_background")
-        self.ctx.move_to(self.SAFEL - 30,   self.SAFEB - 65)
-        self.ctx.line_to(mwidth,            self.SAFEB - 90)
-        self.ctx.line_to(mwidth+35,         self.SAFEB - 255)
-        self.ctx.line_to(self.SAFEL -40,    self.SAFEB - 280)
-        self.ctx.fill()
+        self.cg.set_color("black glass 75")
+        self.cg.polygon(*points)
 
-        self.set_font("default", 72)
-        self.ctx.move_to(self.SAFEL,self.SAFEB-175)
-        self.set_color("text_head")
-        self.ctx.show_text(title)
-        self.ctx.stroke()
-
-        self.set_font("default", 54)
-        self.ctx.move_to(self.SAFEL,self.SAFEB-105)
-        self.set_color("text_body")
-        self.ctx.show_text(artist)
-        self.ctx.stroke()
+        title_w, h = self.cg.text(
+            title,
+            font=font_title,
+            color="gold",
+            pos=(self.cg.safe.l, self.cg.safe.b - 250)
+            )
+        artist_w, h = self.cg.text(
+            artist,
+            font=font_artist,
+            color="#b0c7e8",
+            pos=(self.cg.safe.l, self.cg.safe.b - 160)
+            )
 
 
 
