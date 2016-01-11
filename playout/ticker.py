@@ -3,7 +3,7 @@
 import urllib2
 
 from nx import *
-from nx.cg import CG
+from nxcg import CG
 from nx.plugins import PlayoutPlugin
 
 

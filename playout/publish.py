@@ -17,6 +17,8 @@ class Plugin(PlayoutPlugin):
         self.url = config.get("publish_url", False)
         
     def on_change(self):
+        return False # BROKEN
+
         if not self.url:
             return
 
@@ -64,6 +66,8 @@ class Plugin(PlayoutPlugin):
             self.data["url"] = url
 
     def on_main(self):
+        return False #BROKEN
+
         if not self.url:
             return
 

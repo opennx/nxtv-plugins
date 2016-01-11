@@ -18,6 +18,15 @@ class Plugin(NXCGPlugin):
             }
 
 
+    def ticker(self, *args, **kwargs):
+        return self.cg.nxkit_ticker(*args, **kwargs)
+
+    def clock(self, *args, **kwargs):
+        return self.cg.nxkit_clock(*args, **kwargs)
+
+    def text_area(self, *args, **kwargs):
+        return self.cg.nxkit_text_area(*args, **kwargs)
+
     def music_label(self,title,artist):
         font_title = "Raleway 54"
         font_artist = "Raleway 38"

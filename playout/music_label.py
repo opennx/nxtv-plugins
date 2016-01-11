@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from nx import *
-from nx.cg import CG
+from nxcg import CG
 from nx.plugins import PlayoutPlugin
 
 __manifest__ = {
@@ -29,13 +29,13 @@ class Plugin(PlayoutPlugin):
 
     def begin_show(self):
         if self.channel.get_position() < 10:
-            return False 
+            return False
         self.query("PLAY {} cg_music_label PUSH 15 RIGHT".format(self.layer()))
         return True
 
 
     def begin_hide(self):
-        if self.channel.get_position() < 200: 
+        if self.channel.get_position() < 200:
             return False
         self.query("PLAY {} blank PUSH 15 LEFT".format(self.layer()))
         return True
@@ -43,7 +43,7 @@ class Plugin(PlayoutPlugin):
 
     def end_show(self):
         if self.channel.get_position() < self.channel.get_duration() - 300:
-            return False 
+            return False
         self.query("PLAY {} cg_music_label PUSH 15 RIGHT".format(self.layer()))
         return True
 

@@ -3,7 +3,7 @@
 import copy
 
 from nx import *
-from nx.cg import CG
+from nxcg import CG
 from nx.plugins import PlayoutPlugin
 
 __manifest__ = {
@@ -44,7 +44,7 @@ class Plugin(PlayoutPlugin):
         return True
 
     def vedci_hide(self):
-        if self.channel.get_position() < 230: 
+        if self.channel.get_position() < 230:
             return False
         self.query("PLAY {} blank MIX 15 ".format(self.layer()))
         return True
@@ -59,7 +59,7 @@ class Plugin(PlayoutPlugin):
         return True
 
     def vedeli_hide(self):
-        if self.channel.get_position() < self.channel.get_duration() - 70:  
+        if self.channel.get_position() < self.channel.get_duration() - 70:
             return False
         self.query("PLAY {} blank MIX 15 ".format(self.layer()))
         return True
@@ -73,7 +73,7 @@ class Plugin(PlayoutPlugin):
         return True
 
     def program_hide(self):
-        if self.channel.get_position() < self.channel.get_duration() - 70: 
+        if self.channel.get_position() < self.channel.get_duration() - 70:
             return False
         self.query("PLAY {} blank MIX 15".format(self.layer()))
         return True
