@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 from nxcg.plugin import NXCGPlugin
 from nxcg.utils import textify
 
 
 class Plugin(NXCGPlugin):
     def on_init(self):
+        self.cg.safe_vals["th"] = .05 # no reason to have 10% safe area on internet
         self.cg.nxkit = {
                 "ticker_position" : "top",
                 "ticker_caps" : True,
@@ -67,6 +69,23 @@ class Plugin(NXCGPlugin):
             pos=(self.cg.safe.l, self.cg.safe.b - 160)
             )
 
+    def vedci_zjistili(self):
+        import random
+        try:
+            data = open("/mnt/nxtv_02/Library/vedci_zjistili.txt").read()
+            text = random.choice([i.strip() for i in data.strip().split("\n")])
+        except:
+            text = """že soubor s tím, co zjistili, není k dispozici"""
+        self.text_area("Vědci zjistili", text)
+
+    def vedeli_jste(self):
+        import random
+        try:
+            data = open("/mnt/nxtv_02/Library/vedeli_jste.txt").read()
+            text = random.choice([i.strip() for i in data.strip().split("\n")])
+        except:
+            text = """tahle grafika nám zrovna nefunguje"""
+        self.text_area("Věděli jste?", text)
 
 
     def program(self, header, items):

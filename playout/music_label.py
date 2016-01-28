@@ -13,7 +13,7 @@ __manifest__ = {
 class Plugin(PlayoutPlugin):
     def on_init(self):
         self.id_layer = 12
-        self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_music_label.png")
+        self.image_file = os.path.join(storages[3].local_path, "media.dir", "cg_music_label.png")
 
 
     def on_change(self):

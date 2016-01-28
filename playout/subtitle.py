@@ -14,7 +14,7 @@ class Plugin(PlayoutPlugin):
     def on_init(self):
         self.id_layer    = 11
         self.subs_offset = -10
-        self.image_file  = os.path.join(storages[3].get_path(), "media.dir", "cg_subtitle.png")
+        self.image_file  = os.path.join(storages[3].local_path, "media.dir", "cg_subtitle.png")
 
 
     def on_change(self):
@@ -30,7 +30,7 @@ class Plugin(PlayoutPlugin):
 
 
     def load_subs(self):
-        srt_file  = os.path.splitext(self.channel.current_asset.get_file_path())[0] + ".srt"
+        srt_file  = os.path.splitext(self.channel.current_asset.file_path)[0] + ".srt"
 
         if os.path.exists(srt_file):
             for block in open(srt_file,"rU").read().split("\n\n"):

@@ -15,7 +15,7 @@ __manifest__ = {
 class Plugin(PlayoutPlugin):
     def on_init(self):
         self.id_layer = 11
-        self.image_file = os.path.join(storages[3].get_path(), "media.dir", "cg_template.png")
+        self.image_file = os.path.join(storages[3].local_path, "media.dir", "cg_template.png")
 
         self.templates = {
             1358 : [self.vedci_show, self.vedci_hide], # Vedci zjistili

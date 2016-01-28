@@ -10,14 +10,21 @@ __manifest__ = {
 }
 
 
-
 def scheduled_assets(id_channel, db=False):
-    db = db or DB()  
+    db = db or DB()
     start = time.time()
     stop  = start + (3600*24)
-    db.query("SELECT DISTINCT(i.id_asset) FROM nx_events as e, nx_items as i WHERE e.id_channel = %s AND e.start > %s and e.start < %s AND i.id_bin = e.id_magic AND i.id_asset > 0", [id_channel, start, stop])
+    db.query("""
+        SELECT DISTINCT(i.id_asset) FROM nx_events as e, nx_items as i
+        WHERE e.id_channel = %s
+        AND e.start > %s
+        AND e.start < %s
+        AND i.id_bin = e.id_magic
+        AND i.id_asset > 0""",
+        [id_channel, start, stop]
+        )
     for id_asset, in db.fetchall():
-        yield id_asset 
+        yield id_asset
 
 
 class Plugin(WorkerPlugin):
@@ -41,10 +48,10 @@ class Plugin(WorkerPlugin):
                 id_playout = master_asset[channel_cfg["playout_spec"]]
 
                 transfer = False
-                
+
                 if not id_playout:
                     transfer = True
-                
+
                 else:
                     playout_asset = Asset(id_playout)
                     if not os.path.exists(playout_asset.file_path):
@@ -52,4 +59,3 @@ class Plugin(WorkerPlugin):
 
                 if transfer:
                     send_to(id_master, channel_cfg["send_action"], restart_existing=True, db=db)
-

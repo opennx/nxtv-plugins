@@ -18,11 +18,13 @@ class Plugin(PlayoutPlugin):
         self.current_clock = 0
         self.current_tick  = 0
 
-        self.clock_file  = os.path.join(storages[3].get_path(), "media.dir", "cg_clock.png")
-        self.ticker_file = os.path.join(storages[3].get_path(), "media.dir", "cg_ticker.png")
+        self.clock_file  = os.path.join(storages[3].local_path, "media.dir", "cg_clock.png")
+        self.ticker_file = os.path.join(storages[3].local_path, "media.dir", "cg_ticker.png")
 
     def on_change(self):
-        if self.channel.current_asset["id_folder"] == 5: #Set your condition here (e.g. 'commercial' etc.)
+        if self.channel.current_asset["id_folder"] == 5:
+            self.current_clock = 0
+            self.current_tick = 0
             self.tasks = [self.show]
         else:
             self.tasks = []
@@ -43,7 +45,7 @@ class Plugin(PlayoutPlugin):
                 data = json.loads(urllib2.urlopen("http://localhost:42200", timeout=1).read())
             except:
                 data = False
-            
+
             if data:
                 self.current_tick = now
                 cg = CG()
