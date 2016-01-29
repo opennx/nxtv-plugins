@@ -125,6 +125,40 @@ class Plugin(NXCGPlugin):
         self.cg.text_render(x, y)
 
 
+    def nxkit_schedule(self, header, schedule):
+        off = 160
+        wi = 1200
+        pad_h = 20
+        ### Header
+        x = self.cg.safe.l
+        y = self.cg.safe.t + off
+        w, h = self.cg.text(header,
+            font=self.__param("text_area_head_font"),
+            color=self.__param("text_area_head_color"),
+            width=wi,
+            spacing=0,
+            render=False
+            )
+        self.cg.set_color(self.__param("text_area_head_background"))
+        self.cg.rect(x-pad_h, y-5, w+(pad_h*2), h+10)
+        self.cg.text_render(x, y)
+
+        for i, line in enumerate(schedule):
+            y += h + 40
+            w, h = self.cg.text(
+                line[0],
+                font=self.__param("text_area_body_font") or self.__param("text_area_head_font"),
+                color=self.__param("text_area_body_color") or self.__param("text_area_head_color"),
+                width=wi,
+                spacing=0,
+                render=False
+                )
+            self.cg.set_color(self.__param("text_area_body_background") or self.__param("text_area_head_background"))
+            self.cg.rect(x-pad_h, y-10, w+(pad_h*2), h+80)
+            self.cg.text_render(x, y)
+
+
+
 #TODO
     def nxkit_subtitle(self,titles):
         return
@@ -142,3 +176,4 @@ class Plugin(NXCGPlugin):
             self.ctx.set_source_rgb (.9, .9, .9)
             self.ctx.show_text(text)
             self.ctx.stroke()
+
