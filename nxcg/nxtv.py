@@ -17,6 +17,8 @@ class Plugin(NXCGPlugin):
                 "text_area_head_font" : "TeXGyreHeros Bold 48",
                 "text_area_body_font" : "Raleway 40",
                 "text_area_body_color" : "#b0c7e8",
+                "schedule_time_font" : "TeXGyreHeros Bold 36",
+                "schedule_body_font" : "TeXGyreHeros 36",
             }
 
 

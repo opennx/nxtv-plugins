@@ -129,6 +129,7 @@ class Plugin(NXCGPlugin):
         off = 160
         wi = 1200
         pad_h = 20
+        pad_v = 5
         ### Header
         x = self.cg.safe.l
         y = self.cg.safe.t + off
@@ -143,20 +144,44 @@ class Plugin(NXCGPlugin):
         self.cg.rect(x-pad_h, y-5, w+(pad_h*2), h+10)
         self.cg.text_render(x, y)
 
+        tw, th = self.cg.text(
+                "22:55",
+                font=self.__param("schedule_time_font"),
+                color=self.__param("text_area_body_color"),
+                width=wi,
+                spacing=0,
+                render=False
+                )
+
+        tw += pad_h*2
+        th += pad_v*2
+        lx = x + 220
+
         for i, line in enumerate(schedule):
             y += h + 40
             w, h = self.cg.text(
                 line[0],
-                font=self.__param("text_area_body_font") or self.__param("text_area_head_font"),
-                color=self.__param("text_area_body_color") or self.__param("text_area_head_color"),
+                font=self.__param("schedule_time_font"),
+                color=self.__param("text_area_body_color"),
                 width=wi,
                 spacing=0,
                 render=False
                 )
             self.cg.set_color(self.__param("text_area_body_background") or self.__param("text_area_head_background"))
-            self.cg.rect(x-pad_h, y-10, w+(pad_h*2), h+80)
+            self.cg.rect(x-pad_h, y-pad_v, tw, th)
             self.cg.text_render(x, y)
 
+            w, h = self.cg.text(
+                line[1],
+                font=self.__param("schedule_body_font"),
+                color=self.__param("text_area_body_color"),
+                width=wi,
+                spacing=0,
+                render=False
+                )
+            self.cg.set_color(self.__param("text_area_body_background") or self.__param("text_area_head_background"))
+            self.cg.rect(lx-pad_h,  y-pad_v, w+(pad_h*2), h+(pad_v*2))
+            self.cg.text_render(lx, y)
 
 
 #TODO
