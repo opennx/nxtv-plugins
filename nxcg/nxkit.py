@@ -26,6 +26,15 @@ class Plugin(NXCGPlugin):
                 "text_area_body_background" : False,                    # Inherit form text area head
                 "text_area_head_font" : "Roboto Medium 40",
                 "text_area_body_font" : "Roboto Medium 36",
+                "schedule_head_font" : False,
+                "schedule_time_font" : False,
+                "schedule_body_font" : False,
+                "schedule_head_color" : False,
+                "schedule_time_color" : False,
+                "schedule_body_color" : False,
+                "schedule_head_background" : False,
+                "schedule_time_background" : False,
+                "schedule_body_background" : False,
             }
 
 
@@ -134,20 +143,19 @@ class Plugin(NXCGPlugin):
         x = self.cg.safe.l
         y = self.cg.safe.t + off
         w, h = self.cg.text(header,
-            font=self.__param("text_area_head_font"),
-            color=self.__param("text_area_head_color"),
+            font=self.__param("schedule_head_font") or self.__param("text_area_head_font"),
+            color=self.__param("schedule_head_color") or self.__param("text_area_head_color"),
             width=wi,
             spacing=0,
             render=False
             )
-        self.cg.set_color(self.__param("text_area_head_background"))
+        self.cg.set_color(self.__param("schedule_head_background") or self.__param("text_area_head_background"))
         self.cg.rect(x-pad_h, y-5, w+(pad_h*2), h+10)
         self.cg.text_render(x, y)
 
         tw, th = self.cg.text(
                 "22:55",
-                font=self.__param("schedule_time_font"),
-                color=self.__param("text_area_body_color"),
+                font=self.__param("schedule_time_font") or self.__param("text_area_body_font"),
                 width=wi,
                 spacing=0,
                 render=False
@@ -158,11 +166,12 @@ class Plugin(NXCGPlugin):
         lx = x + 220
 
         for i, line in enumerate(schedule):
+            # Timestamp
             y += h + 40
             w, h = self.cg.text(
                 line[0],
-                font=self.__param("schedule_time_font"),
-                color=self.__param("text_area_body_color"),
+                font=self.__param("schedule_time_font") or self.__param("text_area_body_font"),
+                color=self.__param("schedule_time_color") or self.__param("text_area_body_color"),
                 width=wi,
                 spacing=0,
                 render=False
@@ -171,10 +180,11 @@ class Plugin(NXCGPlugin):
             self.cg.rect(x-pad_h, y-pad_v, tw, th)
             self.cg.text_render(x, y)
 
+            # Program name
             w, h = self.cg.text(
                 line[1],
-                font=self.__param("schedule_body_font"),
-                color=self.__param("text_area_body_color"),
+                font=self.__param("schedule_body_font") or self.__param("text_area_body_font"),
+                color=self.__param("schedule_body_color") or self.__param("text_area_body_color"),
                 width=wi,
                 spacing=0,
                 render=False

@@ -15,6 +15,7 @@ class Plugin(NXCGPlugin):
                 "clock_color" : "#cccccc",
                 "ticker_voffset" : 2,
                 "text_area_head_font" : "TeXGyreHeros Bold 48",
+                "text_area_head_font" : "TeXGyreHeros Bold 48",
                 "text_area_body_font" : "Raleway 40",
                 "text_area_body_color" : "#b0c7e8",
                 "schedule_time_font" : "TeXGyreHeros Bold 36",
