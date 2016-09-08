@@ -39,6 +39,9 @@ class Plugin(NXCGPlugin):
     def program(self, *args, **kwargs): # DEPRECATED ALIAS
         return self.cg.nxkit_schedule(*args, **kwargs)
 
+    def subtitle(self, *args, **kwargs):
+        return self.cg.nxkit_subtitle(*args, **kwargs)
+
     #
     # NXTV Specific widgets
     #

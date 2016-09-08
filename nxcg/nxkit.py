@@ -1,6 +1,7 @@
+import cairo
+
 from nxcg.plugin import NXCGPlugin
 from nxcg.utils import textify
-
 
 class Plugin(NXCGPlugin):
     def on_init(self):
@@ -196,21 +197,20 @@ class Plugin(NXCGPlugin):
             self.cg.text_render(lx, y)
 
 
-#TODO
-    def nxkit_subtitle(self,titles):
-        return
-        self.ctx.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL,cairo.FONT_WEIGHT_BOLD)
-        self.ctx.set_font_size(46)
-        for i,text in enumerate(titles[::-1]):
-            tx, ty, tw, th, dx, dy = self.ctx.text_extents(text)
-            self.ctx.move_to((self.w/2)-(tw/2),self.SAFEB-(i*52))
-            self.ctx.set_source_rgb (.1, .1, .1)
-            self.ctx.set_line_width (4)
-            self.ctx.text_path (text)
-            self.ctx.stroke()
-            self.ctx.move_to((self.w/2)-(tw/2),self.SAFEB-(i*52))
-            self.ctx.set_line_width (0)
-            self.ctx.set_source_rgb (.9, .9, .9)
-            self.ctx.show_text(text)
-            self.ctx.stroke()
+    def nxkit_subtitle(self, titles):
+        titles = titles.split("\n")
+        self.cg.context.select_font_face('TeXGyreHeros', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+        self.cg.context.set_font_size(46)
+        for i, text in enumerate(titles[::-1]):
+            tx, ty, tw, th, dx, dy = self.cg.context.text_extents(text)
+            self.cg.context.move_to((self.cg.width / 2) - (tw / 2), self.cg.safe.b - (i*52))
+            self.cg.context.set_source_rgb (.1, .1, .1)
+            self.cg.context.set_line_width (4)
+            self.cg.context.text_path (text)
+            self.cg.context.stroke()
+            self.cg.context.move_to((self.cg.width / 2) - (tw / 2), self.cg.safe.b - (i*52))
+            self.cg.context.set_line_width (0)
+            self.cg.context.set_source_rgb (.9, .9, .9)
+            self.cg.context.show_text(text)
+            self.cg.context.stroke()
 
