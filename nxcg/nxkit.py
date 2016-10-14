@@ -82,16 +82,15 @@ class Plugin(NXCGPlugin):
             )
 
 
-    def nxkit_crawl(self, text):
-        #TODO: Position, safe areas...
+    def nxkit_crawl(self, text, **kwargs):
         text = textify(text)
         w, h = self.cg.text(
             text,
             font=self.nxkit_param("crawl_font") or self.nxkit_param("ticker_font"),
             render=False
             )
-        top = SAFET + 48
-        self.cg.new(w, 1080)
+        top = kwargs.get("top", self.cg.safe.b - h)
+        self.cg.new(w, self.cg.height)
         self.cg.set_color(self.nxkit_param("crawl_background") or self.nxkit_param("ticker_background"))
         self.cg.rect(0, top, w, 54)
         self.cg.text(
