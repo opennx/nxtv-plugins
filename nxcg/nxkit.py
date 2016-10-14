@@ -84,21 +84,23 @@ class Plugin(NXCGPlugin):
 
     def nxkit_crawl(self, text, **kwargs):
         text = textify(text)
+        if kwargs.get("caps", self.nxkit_param("ticker_caps")):
+            text = text.upper()
+        font = kwargs.get("font", self.nxkit_param("crawl_font") or self.nxkit_param("ticker_font"))
+        color = kwargs.get("color", self.nxkit_param("crawl_color") or self.nxkit_param("ticker_font"))
         w, h = self.cg.text(
             text,
-            font=self.nxkit_param("crawl_font") or self.nxkit_param("ticker_font"),
+            font=font,
             render=False
             )
-        top = kwargs.get("top", self.cg.safe.b - h)
         self.cg.new(w, self.cg.height)
-        self.cg.set_color(self.nxkit_param("crawl_background") or self.nxkit_param("ticker_background"))
-        self.cg.rect(0, top, w, 54)
+        self.cg.rect(0,0,w,self.cg.height)
+        top = kwargs.get("top", self.cg.safe.b - h)
         self.cg.text(
-            text,
-            pos=(0, top+1),
-            font=self.nxkit_param("crawl_font") or self.nxkit_param("ticker_font"),
-            color=self.nxkit_param("crawl_color") or self.nxkit_param("ticker_font"),
-            spacing=0
+                text,
+                pos=(0, top + 1),
+                font=font,
+                color=color,
             )
 
 
