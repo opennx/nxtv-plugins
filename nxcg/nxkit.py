@@ -94,7 +94,6 @@ class Plugin(NXCGPlugin):
             render=False
             )
         self.cg.new(w, self.cg.height)
-        self.cg.rect(0,0,w,self.cg.height)
         top = kwargs.get("top", self.cg.safe.b - h)
         self.cg.text(
                 text,
