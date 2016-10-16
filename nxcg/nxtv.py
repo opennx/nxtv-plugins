@@ -17,8 +17,8 @@ class Plugin(NXCGPlugin):
                 "clock_font" : "TeXGyreHeros Bold 24",
                 "clock_color" : "#cccccc",
                 "ticker_voffset" : 2,
-                "text_area_head_font" : "Raleway 48",
-                "text_area_body_font" : "Raleway 40",
+                "text_area_head_font" : "TeXGyreHeros Bold 40",
+                "text_area_body_font" : "TeXGyreHeros 40",
                 "text_area_body_color" : "#b0c7e8",
                 "schedule_time_font" : "TeXGyreHeros Bold 36",
                 "schedule_body_font" : "TeXGyreHeros 36",
@@ -92,7 +92,7 @@ class Plugin(NXCGPlugin):
 
     def vedci_zjistili(self):
         try:
-            data = open("/mnt/nxtv_02/Library/vedci_zjistili.txt").read()
+            data = open("/mnt/nxtv_01/Library/vedci_zjistili.txt").read()
             text = random.choice([i.strip() for i in data.strip().split("\n")])
         except:
             text = """že soubor s tím, co zjistili, není k dispozici"""
@@ -100,7 +100,7 @@ class Plugin(NXCGPlugin):
 
     def vedeli_jste(self):
         try:
-            data = open("/mnt/nxtv_02/Library/vedeli_jste.txt").read()
+            data = open("/mnt/nxtv_01/Library/vedeli_jste.txt").read()
             text = random.choice([i.strip() for i in data.strip().split("\n")])
         except:
             text = """tahle grafika nám zrovna nefunguje"""
