@@ -15,20 +15,20 @@ __manifest__ = {
 
 class Plugin(PlayoutPlugin):
     def on_init(self):
-        self.current_clock = 0
-        self.current_tick  = 0
-
         self.clock_file  = os.path.join(storages[3].local_path, "media.dir", "cg_clock.png")
         self.ticker_file = os.path.join(storages[3].local_path, "media.dir", "cg_ticker.png")
+        self.ignore_guid = []
+        self.ticker_start()
+
+
+    def ticker_start(self):
+        self.current_clock = 0
+        self.current_tick  = 0
+        self.tasks = [self.show]
+
 
     def on_change(self):
-        if self.channel.current_asset["id_folder"] == 5:
-            self.current_clock = 0
-            self.current_tick = 0
-            self.tasks = [self.show]
-        else:
-            self.tasks = []
-            self.hide()
+        self.ticker_start()
 
     def show(self):
         now = time.time()
@@ -40,18 +40,25 @@ class Plugin(PlayoutPlugin):
             cg.save(self.clock_file)
             self.query("PLAY {} cg_clock".format(self.layer(99)))
 
-        if now - self.current_tick > 10:
+        if now - self.current_tick > 8:
             try:
                 data = json.loads(urllib2.urlopen("http://localhost:42200", timeout=1).read())
             except:
                 data = False
 
             if data:
-                self.current_tick = now
+                if data["identifier/guid"] in self.ignore_guid:
+                    return False
+
                 cg = CG()
-                cg.ticker(data["title"])
+                if not cg.ticker(data["title"]):
+                    logging.debug("Ticker message {} is too long. skipping".format(data["title"]))
+                    self.ignore_guid.append(data["identifier/guid"])
+                    return False
+
                 cg.save(self.ticker_file)
-                self.query("PLAY {} cg_ticker MIX 10".format(self.layer(98)))
+                self.current_tick = now
+                self.query("PLAY {} cg_ticker MIX 5".format(self.layer(98)))
 
         return False
 

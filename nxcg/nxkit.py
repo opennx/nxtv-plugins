@@ -11,7 +11,7 @@ class Plugin(NXCGPlugin):
                 "ticker_voffset" : 2,
                 "ticker_caps" : True,
                 "ticker_font" : "Roboto Medium 26",
-                "ticker_background" : "black glass 75",
+                "ticker_background" : "black glass 70",
                 "ticker_color" : "white",
                 "clock_position" : "right",
                 "clock_width" : 100,
@@ -23,7 +23,7 @@ class Plugin(NXCGPlugin):
                 "crawl_background" : False,
                 "text_area_head_color" : "gold",
                 "text_area_body_color" :  "white",
-                "text_area_head_background" : "black glass 80",
+                "text_area_head_background" : "black glass 75",
                 "text_area_body_background" : False,                    # Inherit form text area head
                 "text_area_head_font" : "Roboto Medium 40",
                 "text_area_body_font" : "Roboto Medium 36",
@@ -60,12 +60,15 @@ class Plugin(NXCGPlugin):
             text = text.upper()
         self.cg.set_color(self.nxkit_param("ticker_background"))
         self.cg.rect(0, self.nxkit_ticker_y, self.cg.width, self.nxkit_param("ticker_height"))
-        self.cg.text(
+        w, h = self.cg.text(
                 text,
                 pos=(self.cg.safe.l, self.nxkit_ticker_y + self.nxkit_param("ticker_voffset")),
                 color=self.nxkit_param("ticker_color"),
                 font=self.nxkit_param("ticker_font"),
             )
+        if w > self.cg.safe.r - self.cg.safe.l - self.nxkit_param("clock_width"):
+            return False # won't fit
+        return True
 
 
     def nxkit_clock(self, tstamp):
